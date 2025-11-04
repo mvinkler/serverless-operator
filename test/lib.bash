@@ -130,7 +130,7 @@ function downstream_serving_e2e_tests {
   done < <(find "$(pwd -P)" -name 'user*.kubeconfig' -print0 | sort -z)
   kubeconfigs_str="$(array.join , "${kubeconfigs[@]}")"
 
-  RUN_FLAGS=(-failfast -timeout=60m -parallel=1)
+  RUN_FLAGS=(-failfast -timeout=60m -parallel=1 -v)
   if [ -n "${OPERATOR_TEST_FLAGS:-}" ]; then
     IFS=" " read -r -a RUN_FLAGS <<< "$OPERATOR_TEST_FLAGS"
   fi

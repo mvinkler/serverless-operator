@@ -315,7 +315,7 @@ spec:
 <p>{{</tab>}}
 {{</tabset>}}</p>
 <p>And the associated <code>VirtualService</code> to route from the sidecar to the
-gateway service (<code>istio-egressgateway.istio-system.svc.cluster.local</code>), as
+gateway service (<code>istio-egressgateway.knative-serving-ingress.svc.cluster.local</code>), as
 well as route from the gateway to the external service. Note that the
 virtual service is exported to all namespaces enabling them to route traffic
 through the gateway to the external service. Forcing traffic to go through
@@ -342,7 +342,7 @@ spec:
       - mesh
     route:
     - destination:
-        host: istio-egressgateway.istio-system.svc.cluster.local
+        host: istio-egressgateway.knative-serving-ingress.svc.cluster.local
   - match:
     - port: 80
       gateways:
@@ -373,7 +373,7 @@ spec:
       - mesh
     route:
     - destination:
-        host: istio-egressgateway.istio-system.svc.cluster.local
+        host: istio-egressgateway.knative-serving-ingress.svc.cluster.local
   - match:
     - port: 80
       gateways:

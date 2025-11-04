@@ -8366,7 +8366,7 @@ data:
 
     # URL to zipkin collector where traces are sent.
     # This must be specified when backend is "zipkin"
-    zipkin-endpoint: "http://zipkin.istio-system.svc.cluster.local:9411/api/v2/spans"
+    zipkin-endpoint: "http://zipkin.knative-serving-ingress.svc.cluster.local:9411/api/v2/spans"
 
     # Enable zipkin debug mode. This allows all spans to be sent to the server
     # bypassing sampling.

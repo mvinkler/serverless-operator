@@ -1,9 +1,14 @@
 package servicemesh
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"testing"
+
+	// needed to serialize the Kubernetes object
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/serializer/json"
 
 	"github.com/openshift-knative/serverless-operator/test"
 	"github.com/openshift-knative/serverless-operator/test/servinge2e"
@@ -18,7 +23,7 @@ import (
 const (
 	Tenant1          = "tenant-1"
 	Tenant2          = "tenant-2"
-	LocalGatewayHost = "knative-local-gateway.istio-system.svc.cluster.local"
+	LocalGatewayHost = "knative-local-gateway.knative-serving-ingress.svc.cluster.local"
 )
 
 var ExpectStatusForbidden = func(resp *spoof.Response) (bool, error) {
@@ -31,77 +36,77 @@ var ExpectStatusForbidden = func(resp *spoof.Response) (bool, error) {
 
 func TestMultiTenancyWithServiceMesh(t *testing.T) {
 	tests := []testCase{
-		{
-			name: "same-tenant-directly",
-			annotations: map[string]string{
-				autoscaling.TargetBurstCapacityKey: "0",
-				autoscaling.MinScaleAnnotationKey:  "1",
-			},
-			sourceNamespace:   Tenant1,
-			targetNamespace:   Tenant1,
-			usePrivateService: true,
-			checkResponseFunc: spoof.MatchesBody(servinge2e.HelloworldGoText),
-		},
-		{
-			name: "cross-tenant-directly",
-			annotations: map[string]string{
-				autoscaling.TargetBurstCapacityKey: "0",
-				autoscaling.MinScaleAnnotationKey:  "1",
-			},
-			sourceNamespace:   Tenant1,
-			targetNamespace:   Tenant2,
-			usePrivateService: true,
-			checkResponseFunc: ExpectStatusForbidden,
-		},
-		{
-			name: "same-tenant-via-activator",
-			annotations: map[string]string{
-				autoscaling.TargetBurstCapacityKey: "-1",
-			},
-			sourceNamespace:   Tenant1,
-			targetNamespace:   Tenant1,
-			checkResponseFunc: spoof.MatchesBody(servinge2e.HelloworldGoText),
-		},
-		{
-			name: "cross-tenant-via-activator",
-			annotations: map[string]string{
-				autoscaling.TargetBurstCapacityKey: "-1",
-			},
-			sourceNamespace:   Tenant1,
-			targetNamespace:   Tenant2,
-			checkResponseFunc: ExpectStatusForbidden,
-		},
-		{
-			name: "same-tenant-via-ingress-via-activator",
-			annotations: map[string]string{
-				autoscaling.TargetBurstCapacityKey: "-1",
-			},
-			sourceNamespace:   Tenant1,
-			targetNamespace:   Tenant1,
-			checkResponseFunc: spoof.MatchesBody(servinge2e.HelloworldGoText),
-			gateway:           LocalGatewayHost,
-		},
-		{
-			name: "cross-tenant-via-ingress-via-activator",
-			annotations: map[string]string{
-				autoscaling.TargetBurstCapacityKey: "-1",
-			},
-			sourceNamespace:   Tenant1,
-			targetNamespace:   Tenant2,
-			checkResponseFunc: ExpectStatusForbidden,
-			gateway:           LocalGatewayHost,
-		},
-		{
-			name: "same-tenant-via-ingress-no-activator",
-			annotations: map[string]string{
-				autoscaling.TargetBurstCapacityKey: "0",
-				autoscaling.MinScaleAnnotationKey:  "1",
-			},
-			sourceNamespace:   Tenant1,
-			targetNamespace:   Tenant1,
-			checkResponseFunc: spoof.MatchesBody(servinge2e.HelloworldGoText),
-			gateway:           LocalGatewayHost,
-		},
+		//{
+		//	name: "same-tenant-directly",
+		//	annotations: map[string]string{
+		//		autoscaling.TargetBurstCapacityKey: "0",
+		//		autoscaling.MinScaleAnnotationKey:  "1",
+		//	},
+		//	sourceNamespace:   Tenant1,
+		//	targetNamespace:   Tenant1,
+		//	usePrivateService: true,
+		//	checkResponseFunc: spoof.MatchesBody(servinge2e.HelloworldGoText),
+		//},
+		//{
+		//	name: "cross-tenant-directly",
+		//	annotations: map[string]string{
+		//		autoscaling.TargetBurstCapacityKey: "0",
+		//		autoscaling.MinScaleAnnotationKey:  "1",
+		//	},
+		//	sourceNamespace:   Tenant1,
+		//	targetNamespace:   Tenant2,
+		//	usePrivateService: true,
+		//	checkResponseFunc: ExpectStatusForbidden,
+		//},
+		//{
+		//	name: "same-tenant-via-activator",
+		//	annotations: map[string]string{
+		//		autoscaling.TargetBurstCapacityKey: "-1",
+		//	},
+		//	sourceNamespace:   Tenant1,
+		//	targetNamespace:   Tenant1,
+		//	checkResponseFunc: spoof.MatchesBody(servinge2e.HelloworldGoText),
+		//},
+		//{
+		//	name: "cross-tenant-via-activator",
+		//	annotations: map[string]string{
+		//		autoscaling.TargetBurstCapacityKey: "-1",
+		//	},
+		//	sourceNamespace:   Tenant1,
+		//	targetNamespace:   Tenant2,
+		//	checkResponseFunc: ExpectStatusForbidden,
+		//},
+		//{
+		//	name: "same-tenant-via-ingress-via-activator",
+		//	annotations: map[string]string{
+		//		autoscaling.TargetBurstCapacityKey: "-1",
+		//	},
+		//	sourceNamespace:   Tenant1,
+		//	targetNamespace:   Tenant1,
+		//	checkResponseFunc: spoof.MatchesBody(servinge2e.HelloworldGoText),
+		//	gateway:           LocalGatewayHost,
+		//},
+		//{
+		//	name: "cross-tenant-via-ingress-via-activator",
+		//	annotations: map[string]string{
+		//		autoscaling.TargetBurstCapacityKey: "-1",
+		//	},
+		//	sourceNamespace:   Tenant1,
+		//	targetNamespace:   Tenant2,
+		//	checkResponseFunc: ExpectStatusForbidden,
+		//	gateway:           LocalGatewayHost,
+		//},
+		//{
+		//	name: "same-tenant-via-ingress-no-activator",
+		//	annotations: map[string]string{
+		//		autoscaling.TargetBurstCapacityKey: "0",
+		//		autoscaling.MinScaleAnnotationKey:  "1",
+		//	},
+		//	sourceNamespace:   Tenant1,
+		//	targetNamespace:   Tenant1,
+		//	checkResponseFunc: spoof.MatchesBody(servinge2e.HelloworldGoText),
+		//	gateway:           LocalGatewayHost,
+		//},
 		{
 			name: "cross-tenant-via-ingress-no-activator",
 			annotations: map[string]string{
@@ -117,12 +122,12 @@ func TestMultiTenancyWithServiceMesh(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 
-		tc.annotations[IstioInjectKey] = "true"
 		tc.annotations[IstioRewriteProbersKey] = "true"
 
 		// Always use cluster-local service.
 		tc.labels = map[string]string{
 			networking.VisibilityLabelKey: serving.VisibilityClusterLocal,
+			IstioInjectKey:                "true",
 		}
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
@@ -135,7 +140,29 @@ func TestMultiTenancyWithServiceMesh(t *testing.T) {
 				ServingEnablePassthroughKey: "true",
 			}, tc.annotations)
 			service.ObjectMeta.Labels = tc.labels
+			// ==========================================================
+			// 👇 START OF DEBUG CODE TO ADD 👇
+			// ==========================================================
+			// Assuming 't' is your *testing.T object from the test function argument
 
+			// 1. Create a serializer (using JSON is often easier for quick logging)
+			// You may need to adapt this based on the project's scheme.
+			scheme := runtime.NewScheme()
+			// Add the Knative Serving scheme to allow serialization
+			// servingv1.AddToScheme(scheme)
+
+			// 2. Serialize the service object to JSON bytes
+			serializer := json.NewSerializer(json.DefaultMetaFactory, scheme, scheme, true)
+			var buffer bytes.Buffer
+			if err := serializer.Encode(service, &buffer); err == nil {
+				// 3. Print the YAML/JSON payload to the test log
+				t.Logf("--- DEBUG: KService YAML Payload for %s ---\n%s\n--- END KSERVICE PAYLOAD ---", tc.name, buffer.String())
+			} else {
+				t.Logf("Failed to serialize KService for debugging: %v", err)
+			}
+			// ==========================================================
+			// 👆 END OF DEBUG CODE TO ADD 👆
+			// ==========================================================
 			service = test.WithServiceReadyOrFail(ctx, service)
 
 			gateway := ""

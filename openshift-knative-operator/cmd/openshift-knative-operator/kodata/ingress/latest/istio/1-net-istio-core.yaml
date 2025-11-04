@@ -96,7 +96,7 @@ data:
     external-gateways: |
       - name: knative-ingress-gateway
         namespace: knative-serving
-        service: istio-ingressgateway.istio-system.svc.cluster.local
+        service: istio-ingressgateway.knative-serving-ingress.svc.cluster.local
     #
     #
     # The old format has the following pattern:
@@ -105,7 +105,7 @@ data:
     # ```
     # Please use the new configuration format `external-gateways` for future compatibility.
     # This configuration will raise an error if either `external-gateways` or `local-gateways` is defined.
-    gateway.knative-serving.knative-ingress-gateway: "istio-ingressgateway.istio-system.svc.cluster.local"
+    gateway.knative-serving.knative-ingress-gateway: "istio-ingressgateway.knative-serving-ingress.svc.cluster.local"
 
 
     # local-gateways defines a cluster local gateway to allow pods outside of the mesh to access
@@ -139,7 +139,7 @@ data:
     local-gateways: |
       - name: knative-local-gateway
         namespace: knative-serving
-        service: knative-local-gateway.istio-system.svc.cluster.local
+        service: knative-local-gateway.knative-serving-ingress.svc.cluster.local
     #
     #
     # The old format has the following pattern:
@@ -149,7 +149,7 @@ data:
     # ```
     # Please use the new configuration format `local-gateways` for future compatibility.
     # This configuration will raise an error if either `external-gateways` or `local-gateways` is defined.
-    local-gateway.knative-serving.knative-local-gateway: "knative-local-gateway.istio-system.svc.cluster.local"
+    local-gateway.knative-serving.knative-local-gateway: "knative-local-gateway.knative-serving-ingress.svc.cluster.local"
 ---
 # Copyright 2019 The Knative Authors
 #

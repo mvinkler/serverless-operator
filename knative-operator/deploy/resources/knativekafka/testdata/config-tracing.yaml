@@ -10,7 +10,7 @@ metadata:
 data:
   _example: |
     backend: "none"
-    zipkin-endpoint: "http://zipkin.istio-system.svc.cluster.local:9411/api/v2/spans"
+    zipkin-endpoint: "http://zipkin.knative-serving-ingress.svc.cluster.local:9411/api/v2/spans"
     stackdriver-project-id: "my-project"
     debug: "false"
     sample-rate: "0.1"
