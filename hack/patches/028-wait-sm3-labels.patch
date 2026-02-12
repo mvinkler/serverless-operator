@@ -1,0 +1,13 @@
+diff --git a/vendor/knative.dev/reconciler-test/pkg/k8s/wait.go b/vendor/knative.dev/reconciler-test/pkg/k8s/wait.go
+--- a/vendor/knative.dev/reconciler-test/pkg/k8s/wait.go
++++ b/vendor/knative.dev/reconciler-test/pkg/k8s/wait.go
+@@ -347,6 +347,9 @@ func WaitForServiceReady(ctx context.Context, t feature.T, name string, readines
+ 	}
+ 
+ 	if cfg := environment.GetIstioConfig(ctx); cfg.Enabled {
++		job.Spec.Template.Labels = map[string]string{
++			"sidecar.istio.io/inject": "true",
++		}
+ 		job.Spec.Template.Annotations = map[string]string{
+ 			"sidecar.istio.io/inject":                "true",
+ 			"sidecar.istio.io/rewriteAppHTTPProbers": "true",

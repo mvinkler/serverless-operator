@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+    <module name="serverless-operator" />
+    <working_directory value="$PROJECT_DIR$" />
+    <go_parameters value="-v -race -count=1 -tags=e2e -failfast -timeout=60m -parallel=1" />
+    <parameters value="--images.producer.file=&quot;$PROJECT_DIR$/test/images-rekt.yaml&quot; --poll.timeout=8m --environment.namespace=serverless-tests --istio.enabled=true" />
+    <envs>
+      <env name="GOPATH" value="$PROJECT_DIR$/../../.." />
+      <env name="SYSTEM_NAMESPACE" value="knative-eventing" />
+    </envs>
+    <kind value="PACKAGE" />
+    <package value="github.com/openshift-knative/serverless-operator" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$" />
+    <framework value="gotest" />
+    <method v="2" />
+  </configuration>
+</component>

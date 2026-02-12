@@ -1,0 +1,20 @@
+diff --git a/test/servinge2e/servicemesh/multitenant_test.go b/test/servinge2e/servicemesh/multitenant_test.go
+--- a/test/servinge2e/servicemesh/multitenant_test.go
++++ b/test/servinge2e/servicemesh/multitenant_test.go
+@@ -18,7 +18,7 @@ import (
+ const (
+ 	Tenant1          = "tenant-1"
+ 	Tenant2          = "tenant-2"
+-	LocalGatewayHost = "knative-local-gateway.istio-system.svc.cluster.local"
++	LocalGatewayHost = "knative-local-gateway.knative-serving-ingress.svc.cluster.local"
+ )
+ 
+ var ExpectStatusForbidden = func(resp *spoof.Response) (bool, error) {
+@@ -123,6 +123,7 @@ func TestMultiTenancyWithServiceMesh(t *testing.T) {
+ 		// Always use cluster-local service.
+ 		tc.labels = map[string]string{
+ 			networking.VisibilityLabelKey: serving.VisibilityClusterLocal,
++			IstioInjectKey:                "true",
+ 		}
+ 		t.Run(tc.name, func(t *testing.T) {
+ 			t.Parallel()

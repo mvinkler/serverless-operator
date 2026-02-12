@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TestContainerSourceChannelKsvc in github.com/openshift-knative/serverless-operator/test/eventinge2erekt" type="GoTestRunConfiguration" factoryName="Go Test" nameIsGenerated="true">
+    <module name="serverless-operator" />
+    <working_directory value="$PROJECT_DIR$/test/eventinge2erekt" />
+    <go_parameters value="-v -race -count=1 -tags=e2e -failfast -timeout=60m -parallel=1" />
+    <parameters value="--images.producer.file=&quot;$PROJECT_DIR$/test/images-rekt.yaml&quot; --poll.timeout=8m --environment.namespace=serverless-tests --istio.enabled=true" />
+    <envs>
+      <env name="GOPATH" value="$PROJECT_DIR$/../../.." />
+      <env name="SYSTEM_NAMESPACE" value="knative-eventing" />
+    </envs>
+    <root_directory value="$PROJECT_DIR$" />
+    <kind value="PACKAGE" />
+    <package value="github.com/openshift-knative/serverless-operator/test/eventinge2erekt" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$" />
+    <framework value="gotest" />
+    <pattern value="^\QTestContainerSourceChannelKsvc\E$" />
+    <method v="2" />
+  </configuration>
+</component>

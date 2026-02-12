@@ -1,0 +1,17 @@
+diff --git a/hack/lib/mesh.bash b/hack/lib/mesh.bash
+--- a/hack/lib/mesh.bash
++++ b/hack/lib/mesh.bash
+@@ -130,11 +130,11 @@ function deploy_gateways {
+   for ns in serverless-tests eventing-e2e0 eventing-e2e1 eventing-e2e2 eventing-e2e3 eventing-e2e4; do
+     oc apply -n "$ns" -f "${resources_dir}"/kafka-service-entry.yaml || return $?
+   done
+-  oc apply -n "serverless-tests" -f "${resources_dir}"/network-policy-monitoring.yaml || return $?
++#  oc apply -n "serverless-tests" -f "${resources_dir}"/network-policy-monitoring.yaml || return $?
+ }
+ 
+ function undeploy_gateways {
+-  oc delete -n serverless-tests -f "${resources_dir}"/network-policy-monitoring.yaml --ignore-not-found || return $?
++#  oc delete -n serverless-tests -f "${resources_dir}"/network-policy-monitoring.yaml --ignore-not-found || return $?
+   for ns in serverless-tests eventing-e2e0 eventing-e2e1 eventing-e2e2 eventing-e2e3 eventing-e2e4; do
+     oc delete -n "$ns" -f "${resources_dir}"/kafka-service-entry.yaml --ignore-not-found || return $?
+   done

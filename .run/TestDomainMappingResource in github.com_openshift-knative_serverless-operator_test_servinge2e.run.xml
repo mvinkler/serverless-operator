@@ -1,0 +1,19 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TestDomainMappingResource in github.com/openshift-knative/serverless-operator/test/servinge2e" type="GoTestRunConfiguration" factoryName="Go Test" nameIsGenerated="true">
+    <module name="serverless-operator" />
+    <working_directory value="$PROJECT_DIR$/test/servinge2e" />
+    <go_parameters value="-v -race -count=1 -tags=e2e -failfast -timeout=60m -parallel=1" />
+    <parameters value="--kubeconfigs=&quot;$USER_HOME$/.kube/config,$PROJECT_DIR$/user1.kubeconfig,$PROJECT_DIR$/user2.kubeconfig,$PROJECT_DIR$/user3.kubeconfig&quot; --imagetemplate=' {{- with .Name }} {{- if eq . &quot;httpproxy&quot; }}quay.io/redhat-user-workloads/ocp-serverless-tenant/serverless-operator-137/kn-serving-test-httpproxy@sha256:af9187140e10fa972e7b2fd16d5d1fc0bc2fd84443802b394bcecd472640435e {{- else if eq . &quot;autoscale&quot; }}quay.io/redhat-user-workloads/ocp-serverless-tenant/serverless-operator-137/kn-serving-test-autoscale@sha256:71e444674e56a7a8e268b19b0a5bfd5bb3cc0c4935358919d4645679d3aecfbd {{- else if eq . &quot;helloworld-go&quot; }}quay.io/redhat-user-workloads/ocp-serverless-tenant/serverless-operator-137/kn-serving-test-helloworld@sha256:92941e2e6b93a4094234dcc321456873127401b92185139c684cdcd7a7e4c787 {{- else if eq . &quot;recordevents&quot; }}quay.io/redhat-user-workloads/ocp-serverless-tenant/serverless-operator-137/kn-eventing-test-recordevents@sha256:88b03aae6059724874aa53588abab0421ae43fceb18a98588c9b902073bad731 {{- else if eq . &quot;wathola-forwarder&quot; }}quay.io/redhat-user-workloads/ocp-serverless-tenant/serverless-operator-137/kn-eventing-test-wathola-forwarder@sha256:08a316a763cbae10abbd2b80ddbc59934afd0361816e93514879ca08a0cc51fb {{- else if eq . &quot;kafka&quot; }}quay.io/strimzi/kafka:latest-kafka-3.4.0 {{- else }}quay.io/redhat-user-workloads/ocp-serverless-tenant/serverless-operator-137/kn-serving-test-{{.}}:latest{{end -}} {{end -}} '" />
+    <envs>
+      <env name="GOPATH" value="$PROJECT_DIR$/../../.." />
+    </envs>
+    <root_directory value="$PROJECT_DIR$" />
+    <kind value="PACKAGE" />
+    <package value="github.com/openshift-knative/serverless-operator/test/servinge2e" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$" />
+    <framework value="gotest" />
+    <pattern value="^\QTestDomainMappingResource\E$" />
+    <method v="2" />
+  </configuration>
+</component>

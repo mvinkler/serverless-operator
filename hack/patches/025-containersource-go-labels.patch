@@ -1,0 +1,11 @@
+diff --git a/vendor/knative.dev/eventing/test/rekt/resources/containersource/containersource.go b/vendor/knative.dev/eventing/test/rekt/resources/containersource/containersource.go
+--- a/vendor/knative.dev/eventing/test/rekt/resources/containersource/containersource.go
++++ b/vendor/knative.dev/eventing/test/rekt/resources/containersource/containersource.go
+@@ -55,6 +55,7 @@ func Install(name string, opts ...manifest.CfgFn) feature.StepFn {
+ 	return func(ctx context.Context, t feature.T) {
+ 		if ic := environment.GetIstioConfig(ctx); ic.Enabled {
+ 			manifest.WithIstioPodAnnotations(cfg)
++			manifest.WithIstioPodLabels(cfg)
+ 		}
+ 
+ 		if err := registerImage(ctx); err != nil {
